@@ -1,27 +1,22 @@
 import 'package:flutter/material.dart';
+part 'teams.dart';
 
 void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Bowl of Nouns',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: CreateGamePage(title: 'Create Game'),
-    );
-  }
+  runApp(MaterialApp(
+    title: 'Bowl of Nouns',
+    initialRoute: '/',
+    routes: {
+      '/': (context) => CreateGamePage(),
+      '/TeamCreation': (context) => TeamCreation(),
+    },
+    theme: ThemeData(
+      primarySwatch: Colors.blue,
+    ),
+    //home: CreateGamePage(title: 'Create Game'),
+  ));
 }
 
 class CreateGamePage extends StatefulWidget {
-  CreateGamePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
   @override
   _CreateGamePageState createState() => _CreateGamePageState();
 }
@@ -58,7 +53,7 @@ class _CreateGamePageState extends State<CreateGamePage> {
           _numPlayers = _numPlayersForm;
           _numTeams = _numTeamsForm;
           _numWords = _numWordsForm;
-          //Go to the next page with _numPlayers, _numTeams, and _numWords
+          Navigator.pushNamed(context, '/TeamCreation');
         });
       }
       else {
@@ -83,9 +78,6 @@ class _CreateGamePageState extends State<CreateGamePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: Center(
         child: Form(
           key: formKey,
