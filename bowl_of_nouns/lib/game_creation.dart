@@ -151,7 +151,7 @@ class _CreateGamePageState extends State<CreateGamePage> {
               ),
               Container(
                 padding: EdgeInsets.all(8),
-                child: RaisedButton(
+                child: ElevatedButton(
                   child: Text('Create Game'),
                   onPressed: _createGame,
                 ),

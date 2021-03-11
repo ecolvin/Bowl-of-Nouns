@@ -7,11 +7,11 @@ part 'game_creation.dart';
 part 'auth.dart';
 part 'registration.dart';
 
-final FirebaseAuth auth = FirebaseAuth.instance;
-
 String _signedIn = "Sign In";
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MaterialApp(
     title: 'Bowl of Nouns',
     initialRoute: '/',
@@ -36,25 +36,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _CreateHomePageState extends State<HomePage> {
-  bool _initialized = false;
-  bool _error = false;
-
-  void initializeFlutterFire() async {
-    try{
-      await Firebase.initializeApp();
-      setState((){
-        _initialized = true;
-      });
-    } catch(e) {
-      setState((){
-        _error = true;
-      });
-    }
-  }
 
   void initializeSignedin() async {
     setState(() {
-      if (auth.currentUser == null) {
+      if (FirebaseAuth.instance.currentUser == null) {
         _signedIn = "Sign In";
       }
       else {
@@ -65,20 +50,12 @@ class _CreateHomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    initializeFlutterFire();
     super.initState();
     initializeSignedin();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_error) {
-      return SomethingWentWrong();
-    }
-
-    if (!_initialized) {
-      return Loading();
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -86,14 +63,14 @@ class _CreateHomePageState extends State<HomePage> {
         actions: <Widget>[
           Builder(builder: (BuildContext context) {
             return TextButton(
-              child: Text(_signedIn),
+              child: Text(_signedIn, style: TextStyle(color: Colors.black)),
               onPressed: () async {
-                User user = auth.currentUser;
+                User user = FirebaseAuth.instance.currentUser;
                 if (user == null) {
                   Navigator.pushNamed(context, '/Authentication');
                 }
                 else {
-                  await auth.signOut();
+                  await FirebaseAuth.instance.signOut();
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text('You were successfully signed out.'),
                   ));
