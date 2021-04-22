@@ -29,7 +29,7 @@ class _UserAuthenticationState extends State<UserAuthentication> {
       }
 
       if(user != null) {
-        Navigator.pop(context);
+        Navigator.pop(context, 'Success');
       }
       else {
         setState(() {
